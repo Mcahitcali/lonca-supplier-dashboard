@@ -27,7 +27,10 @@ class VendorController {
     async getVendorSalesSummary(req, res, next) {
         try {
             const { vendorId } = req.params;
-            const salesSummary = await vendorService.getVendorSalesSummary(vendorId);
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 10;
+            
+            const salesSummary = await vendorService.getVendorSalesSummary(vendorId, page, limit);
             res.json(salesSummary);
         } catch (error) {
             next(error);
