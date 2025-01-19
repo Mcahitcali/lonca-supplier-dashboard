@@ -94,7 +94,7 @@ export default function VendorSalesChart() {
   }
 
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
+    <div className="p-4 bg-white rounded-lg">
       <div className="mb-4 flex gap-4 items-center">
         <div className="flex items-center gap-2">
           <span className="text-sm text-gray-600">Start Date:</span>
