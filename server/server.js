@@ -18,7 +18,6 @@ async function startServer() {
     }
 }
 
-// Handle graceful shutdown
 process.on('SIGINT', async () => {
     await client.close();
     console.log("Disconnected from MongoDB");

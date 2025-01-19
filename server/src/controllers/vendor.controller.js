@@ -1,4 +1,6 @@
 const VendorModel = require('../models/vendor.model');
+const vendorService = require('../services/vendor.service');
+const VendorService = require('../services/vendor.service');
 
 class VendorController {
     async getAllVendors(req, res) {
@@ -19,6 +21,28 @@ class VendorController {
             res.json(vendor);
         } catch (error) {
             res.status(500).json({ error: "Failed to fetch vendor" });
+        }
+    }
+
+    async getVendorSalesSummary(req, res, next) {
+        try {
+            const { vendorId } = req.params;
+            const salesSummary = await vendorService.getVendorSalesSummary(vendorId);
+            res.json(salesSummary);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async getMonthlyVendorSales(req, res, next) {
+        try {
+            const { vendorId } = req.params;
+            const { startDate, endDate } = req.query;
+            
+            const monthlySales = await VendorService.getMonthlyVendorSales(vendorId, startDate, endDate);
+            res.json(monthlySales);
+        } catch (error) {
+            next(error);
         }
     }
 }

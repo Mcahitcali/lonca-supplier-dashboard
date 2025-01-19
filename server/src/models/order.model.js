@@ -23,6 +23,15 @@ class OrderModel {
             throw error;
         }
     }
+
+    async aggregate(pipeline) {
+        try {
+            return await this.collection.aggregate(pipeline).toArray();
+        } catch (error) {
+            console.error("Error aggregating orders:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = new OrderModel();
