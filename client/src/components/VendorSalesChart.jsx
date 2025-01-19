@@ -39,7 +39,7 @@ const options = {
       beginAtZero: true,
       title: {
         display: true,
-        text: 'Total Revenue (₺)'
+        text: 'Total Sales'
       }
     }
   }
@@ -69,10 +69,16 @@ export default function VendorSalesChart() {
     labels: salesData.map(item => `${item.year}-${String(item.month).padStart(2, '0')}`),
     datasets: [
       {
-        label: 'Total Revenue',
-        data: salesData.map(item => item.total_revenue),
+        label: 'Total Products Sold',
+        data: salesData.map(item => item.total_sales_count),
         borderColor: 'rgb(75, 192, 192)',
         backgroundColor: 'rgba(75, 192, 192, 0.5)',
+      },
+      {
+        label: 'Total Orders',
+        data: salesData.map(item => item.order_count),
+        borderColor: 'rgb(255, 99, 132)',
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
     ],
   };
@@ -86,7 +92,7 @@ export default function VendorSalesChart() {
       {salesData.length > 0 ? (
         <Line options={options} data={chartData} />
       ) : (
-        <div className="text-center text-gray-500">Loading...</div>
+        <div className="text-center text-gray-500">No data available</div>
       )}
     </div>
   );

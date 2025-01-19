@@ -101,7 +101,6 @@ class VendorService {
                 {
                     $match: {
                         'product_details.vendor': new ObjectId(vendorId),
-                        'cart_item.order_status': { $in: ['Confirmed', 'Received'] }
                     }
                 },
                 {
