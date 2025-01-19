@@ -147,8 +147,8 @@ class VendorService {
                 },
                 {
                     $sort: {
-                        year: -1,
-                        month: -1
+                        year: 1,
+                        month: 1
                     }
                 }
             ];

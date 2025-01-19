@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -48,13 +50,17 @@ const options = {
 export default function VendorSalesChart() {
   const [salesData, setSalesData] = useState([]);
   const { selectedVendorId } = useVendor();
+  const [startDate, setStartDate] = useState(new Date(2021, 0, 1));
+  const [endDate, setEndDate] = useState(new Date(2024, 11, 31));
 
   useEffect(() => {
     const fetchSalesData = async () => {
       if (!selectedVendorId) return;
 
       try {
-        const response = await fetch(`${ENDPOINTS.VENDORS}/${selectedVendorId}/monthly-sales?startDate=2021-01-01&endDate=2024-12-31`);
+        const formattedStartDate = startDate.toISOString().split('T')[0];
+        const formattedEndDate = endDate.toISOString().split('T')[0];
+        const response = await fetch(`${ENDPOINTS.VENDORS}/${selectedVendorId}/monthly-sales?startDate=${formattedStartDate}&endDate=${formattedEndDate}`);
         const data = await response.json();
         setSalesData(data);
       } catch (error) {
@@ -63,7 +69,7 @@ export default function VendorSalesChart() {
     };
 
     fetchSalesData();
-  }, [selectedVendorId]);
+  }, [selectedVendorId, startDate, endDate]);
 
   const chartData = {
     labels: salesData.map(item => `${item.year}-${String(item.month).padStart(2, '0')}`),
@@ -89,6 +95,31 @@ export default function VendorSalesChart() {
 
   return (
     <div className="p-4 bg-white rounded-lg shadow-md">
+      <div className="mb-4 flex gap-4 items-center">
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Start Date:</span>
+          <DatePicker
+            selected={startDate}
+            onChange={date => setStartDate(date)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            className="p-2 border rounded"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">End Date:</span>
+          <DatePicker
+            selected={endDate}
+            onChange={date => setEndDate(date)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            className="p-2 border rounded"
+          />
+        </div>
+      </div>
       {salesData.length > 0 ? (
         <Line options={options} data={chartData} />
       ) : (
